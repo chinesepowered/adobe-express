@@ -1,0 +1,158 @@
+{
+  "name": "accessibility-validator-express-addon",
+  "version": "1.0.0",
+  "description": "Real-time accessibility validation tool for Adobe Express designs with WCAG compliance checking",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "webpack serve --mode development --open",
+    "build": "webpack --mode production",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:e2e": "cypress run",
+    "test:a11y": "pa11y-ci --sitemap http://localhost:3000/sitemap.xml",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "format": "prettier --write src/**/*.{js,css,html}",
+    "validate": "npm run lint && npm run test",
+    "clean": "rimraf dist",
+    "prepare": "npm run build",
+    "start": "serve dist -s -l 3000",
+    "docs": "jsdoc src/**/*.js -d docs",
+    "analyze": "webpack-bundle-analyzer dist/bundle.js"
+  },
+  "keywords": [
+    "adobe-express",
+    "addon",
+    "accessibility",
+    "wcag",
+    "a11y",
+    "design-validation",
+    "inclusive-design"
+  ],
+  "author": {
+    "name": "Accessibility Validator Team",
+    "email": "team@accessibility-validator.com",
+    "url": "https://accessibility-validator.com"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/accessibility-validator/express-addon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/accessibility-validator/express-addon/issues"
+  },
+  "homepage": "https://accessibility-validator.com/express-addon",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "@adobe/ccweb-add-on-sdk": "^1.0.0",
+    "color": "^4.2.3",
+    "wcag-contrast": "^3.0.0",
+    "openai": "^4.0.0",
+    "axios": "^1.4.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "@types/node": "^20.4.0",
+    "babel-loader": "^9.1.0",
+    "css-loader": "^6.8.0",
+    "cypress": "^12.17.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-accessibility": "^5.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^29.6.0",
+    "jest-environment-jsdom": "^29.6.0",
+    "jsdoc": "^4.0.0",
+    "mini-css-extract-plugin": "^2.7.0",
+    "pa11y-ci": "^3.0.1",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "serve": "^14.2.0",
+    "style-loader": "^3.3.0",
+    "webpack": "^5.88.0",
+    "webpack-bundle-analyzer": "^4.9.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/src/tests/setup.js"],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/tests/**",
+      "!src/**/*.test.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "plugins": [
+      "accessibility"
+    ],
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "jest": true
+    },
+    "rules": {
+      "accessibility/valid-aria": "error",
+      "accessibility/no-invalid-aria": "error",
+      "accessibility/click-events-have-key-events": "warn",
+      "accessibility/no-static-element-interactions": "warn"
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "printWidth": 80,
+    "tabWidth": 2
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "browsers": [
+              "> 1%",
+              "last 2 versions"
+            ]
+          }
+        }
+      ]
+    ]
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "manifest.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
