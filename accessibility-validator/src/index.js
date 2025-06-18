@@ -599,7 +599,6 @@ AccessibilityValidator.prototype.displayResults = function(results) {
         `).join('');
     }
 };
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     new AccessibilityValidator();
