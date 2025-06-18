@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Validator</title>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+    <div id="app">
+        <div class="header">
+            <h2>♿ Accessibility Validator</h2>
+            <p>Real-time WCAG compliance checking</p>
+        </div>
+        
+        <div class="validation-panel">
+            <div class="scan-controls">
+                <button id="scanBtn" class="primary-btn">Scan Canvas</button>
+                <button id="exportBtn" class="export-btn">Export Report</button>
+                <div id="scanStatus" class="status">Ready to scan</div>
+            </div>
+            
+            <div class="results-section">
+                <h3>Validation Results</h3>
+                <div id="results" class="results-container">
+                    <div class="placeholder">Click "Scan Canvas" to check accessibility</div>
+                </div>
+            </div>
+            
+            <div class="metrics-section">
+                <h3>Accessibility Score</h3>
+                <div class="score-display">
+                    <div id="scoreCircle" class="score-circle">
+                        <span id="scoreText">--</span>
+                    </div>
+                    <div class="score-details">
+                        <div>WCAG Level: <span id="wcagLevel">--</span></div>
+                        <div>Issues Found: <span id="issueCount">--</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="src/index.js"></script>
+</body>
+</html>
