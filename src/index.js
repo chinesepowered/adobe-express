@@ -1,8 +1,8 @@
 // src/index.js - Main Accessibility Validator Add-on Logic
 
-// Import required libraries
 import Color from 'color';
 import wcagContrast from 'wcag-contrast';
+import addOnUISdk from "https://express.adobe.com/static/add-on-sdk/sdk.js";
 
 // Main Accessibility Validator Class
 class AccessibilityValidator {
@@ -28,14 +28,17 @@ class AccessibilityValidator {
     async init() {
         console.log('Initializing Accessibility Validator Add-on...');
         
+        await addOnUISdk.ready;
+        console.log('addOnUISdk is ready for use.');
+        
         // Create the main UI
         this.createUI();
         
         // Set up event listeners
         this.setupEventListeners();
         
-        // Initialize Adobe Express SDK (mock for demo)
-        await this.initializeExpressSDK();
+        // Initialize Adobe Express SDK
+        this.editor = addOnUISdk.app.document;
         
         console.log('Accessibility Validator initialized successfully');
     }
@@ -127,21 +130,6 @@ class AccessibilityValidator {
         });
     }
     
-    async initializeExpressSDK() {
-        try {
-            // In a real add-on, this would be:
-            // const { editor } = await import('@adobe/ccweb-add-on-sdk');
-            // this.editor = editor;
-            
-            // For demo purposes, we'll use mock data
-            console.log('Express SDK initialized (demo mode)');
-            return true;
-        } catch (error) {
-            console.error('Failed to initialize Express SDK:', error);
-            return false;
-        }
-    }
-    
     toggleValidation() {
         this.isActive = !this.isActive;
         
@@ -231,11 +219,12 @@ class AccessibilityValidator {
     
     async getDocumentElements() {
         // In a real add-on, this would interact with the Express API:
-        // const document = await this.editor.getDocument();
-        // return document.getElements();
-        
-        // For demo, return mock elements
-        return window.mockExpressAPI ? window.mockExpressAPI.getDocument().getPages()[0].getChildren() : [];
+        const pages = await this.editor.getPages();
+        // For now, we only support the first page
+        if (pages.length > 0) {
+            return pages[0].children;
+        }
+        return [];
     }
     
     async checkColorContrast(elements) {
