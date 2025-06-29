@@ -1,6 +1,27 @@
 // Adobe Express Add-on SDK integration
+import AccessibilityAIAdvisor from './ai-advisor.js';
+
 let editor = null;
 let isAdobeExpressEnvironment = false;
+let aiAdvisor = null;
+
+// Initialize AI Advisor if API key is available
+async function initializeAI() {
+    try {
+        const { config } = await import('./config.js').catch(() => ({ config: null }));
+        if (config && config.TOGETHER_API_KEY && config.TOGETHER_API_KEY !== 'your-together-api-key-here') {
+            aiAdvisor = new AccessibilityAIAdvisor(config.TOGETHER_API_KEY, config);
+            console.log('🤖 AI-powered accessibility advice enabled (Free tier: 2 calls/min)');
+        } else {
+            console.log('💡 AI advice disabled. Create src/config.js with your Together AI API key to enable AI recommendations.');
+        }
+    } catch (error) {
+        console.log('💡 AI advice disabled. Create src/config.js with your Together AI API key to enable AI recommendations.');
+    }
+}
+
+// Initialize AI when the module loads
+initializeAI();
 
 // Initialize Adobe Express SDK
 async function initializeSDK() {
@@ -118,7 +139,7 @@ class AccessibilityValidator {
             }
 
             const validationResults = await this.validateDocument(document);
-            this.displayResults(validationResults);
+            await this.displayResults(validationResults);
             
         } catch (error) {
             console.error('Error scanning canvas:', error);
@@ -470,7 +491,7 @@ class AccessibilityValidator {
         return Math.max(0, Math.min(100, score));
     }
 
-    displayResults(results) {
+    async displayResults(results) {
         // Store results for export
         this.lastResults = results;
         
@@ -497,13 +518,74 @@ class AccessibilityValidator {
         if (results.issues.length === 0) {
             resultsContainer.innerHTML = '<div class="placeholder">🎉 No accessibility issues found!</div>';
         } else {
+            // Show initial results with loading state for AI advice
             resultsContainer.innerHTML = results.issues.map(issue => `
                 <div class="issue-item ${issue.type}">
                     <div class="issue-title">${issue.title}</div>
                     <div class="issue-description">${issue.description}</div>
                     <div class="issue-suggestion">${issue.suggestion}</div>
+                    ${aiAdvisor ? `
+                        <div class="ai-advice-section">
+                            <div class="ai-advice-loading">🤖 Getting AI recommendations for all issues...</div>
+                        </div>
+                    ` : ''}
                 </div>
             `).join('');
+            
+            // Get AI advice for each issue if available
+            if (aiAdvisor) {
+                this.enhanceWithAIAdvice(results.issues);
+            }
+        }
+    }
+
+    async enhanceWithAIAdvice(issues) {
+        const issueElements = document.querySelectorAll('.issue-item');
+        
+        try {
+            // Get AI advice for ALL issues in a single batch call (rate limit friendly)
+            const aiAdviceList = await aiAdvisor.getBulkAdvice(issues, {
+                designTool: 'Adobe Express',
+                targetCompliance: 'WCAG 2.1 AA'
+            });
+            
+            // Update UI with AI advice for each issue
+            for (let i = 0; i < issues.length; i++) {
+                const issue = issues[i];
+                const issueElement = issueElements[i];
+                const adviceSection = issueElement.querySelector('.ai-advice-section');
+                
+                if (!adviceSection) continue;
+                
+                const aiAdvice = aiAdviceList[i];
+                
+                // Update the UI with AI advice
+                adviceSection.innerHTML = `
+                    <div class="ai-advice">
+                        <div class="ai-advice-header">🤖 AI Recommendation</div>
+                        <div class="ai-advice-content">${aiAdvice}</div>
+                    </div>
+                `;
+                
+                // Store AI advice for export
+                issue.aiAdvice = aiAdvice;
+            }
+            
+        } catch (error) {
+            console.error('Failed to get AI advice for issues:', error);
+            
+            // Show error state for all issues
+            issueElements.forEach(issueElement => {
+                const adviceSection = issueElement.querySelector('.ai-advice-section');
+                if (adviceSection) {
+                    adviceSection.innerHTML = `
+                        <div class="ai-advice-error">
+                            <div class="ai-advice-header">🤖 AI Recommendation</div>
+                            <div class="ai-advice-content">AI advice temporarily unavailable. Please try again in 30 seconds.</div>
+                        </div>
+                    `;
+                }
+            });
         }
     }
 
@@ -574,6 +656,12 @@ class AccessibilityValidator {
             <h3>${issue.title}</h3>
             <p><strong>Description:</strong> ${issue.description}</p>
             <p><strong>Suggestion:</strong> ${issue.suggestion}</p>
+            ${issue.aiAdvice ? `
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px; border-radius: 8px; margin-top: 12px;">
+                    <h4 style="margin: 0 0 8px 0; font-size: 14px;">🤖 AI Recommendation</h4>
+                    <p style="margin: 0; font-size: 13px; line-height: 1.5;">${issue.aiAdvice}</p>
+                </div>
+            ` : ''}
         </div>
       `).join('')}
     

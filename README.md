@@ -53,6 +53,13 @@ Traditional accessibility checking happens after design completion, leading to:
 - Issue summaries with remediation steps
 - Compliance tracking for teams
 
+#### **🤖 AI-Powered Recommendations (Optional)**
+- Context-aware accessibility advice using Llama 3.3
+- Specific implementation steps for each issue
+- WCAG success criteria references
+- Educational explanations of why issues matter
+- Single API call processes all issues (rate-limit friendly)
+
 ## 💻 **Installation & Setup**
 
 ### **Prerequisites**
@@ -67,6 +74,8 @@ cd adobe-express
 
 # Install dependencies
 pnpm install
+
+# Set up AI features (optional) - see AI setup section below
 
 # Build the add-on
 pnpm run build
@@ -92,6 +101,39 @@ pnpm start
    - Click "Scan Canvas" to validate your design
    - Review issues and follow recommendations
    - Export reports as needed
+
+### **🤖 AI Features Setup (Optional)**
+
+To enable AI-powered accessibility recommendations:
+
+1. **Get Together AI API Key**
+   ```bash
+   # Visit https://api.together.xyz/
+   # Sign up for free account
+   # Copy your API key from dashboard
+   ```
+
+2. **Configure API Key**
+   ```bash
+   # Edit src/config.js and replace the placeholder API key
+   # Change 'your-together-api-key-here' to your actual API key
+   ```
+
+3. **Rate Limits & Usage**
+   - **Free tier**: 2 API calls per minute
+   - **Smart batching**: All issues processed in single call
+   - **Auto rate limiting**: 30-second delays between calls
+   - **Caching**: Prevents repeated calls for similar issues
+
+4. **Security Note**
+   - `src/config.js` is automatically added to `.gitignore`
+   - Never commit API keys to version control
+   - The file is created when you first set up the project
+
+5. **Expected Behavior**
+   - Scan shows: "🤖 Getting AI recommendations for all issues..."
+   - AI advice appears in gradient cards below each issue
+   - Export reports include AI recommendations
 
 ## 🎬 **How to Use**
 

@@ -232,3 +232,65 @@ body {
     font-weight: 600;
     color: #333;
 }
+
+/* AI Advice Styling */
+.ai-advice-section {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.ai-advice-loading {
+    color: #666;
+    font-style: italic;
+    font-size: 13px;
+    animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
+}
+
+.ai-advice {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 8px;
+}
+
+.ai-advice-header {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ai-advice-content {
+    font-size: 13px;
+    line-height: 1.5;
+    opacity: 0.95;
+}
+
+.ai-advice-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 8px;
+}
+
+.ai-advice-error .ai-advice-header {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.ai-advice-error .ai-advice-content {
+    font-size: 12px;
+    opacity: 0.8;
+}
