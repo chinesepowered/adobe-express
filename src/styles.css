@@ -1,0 +1,234 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+#app {
+    padding: 16px;
+    max-width: 100%;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px;
+}
+
+.header h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.header p {
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+.validation-panel {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.scan-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.primary-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.primary-btn:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+}
+
+.primary-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.export-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    margin-left: 8px;
+}
+
+.export-btn:hover {
+    background: #1976D2;
+    transform: translateY(-1px);
+}
+
+.export-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.status {
+    color: #666;
+    font-size: 14px;
+    padding: 8px 12px;
+    background: #f0f8ff;
+    border-radius: 6px;
+    border-left: 4px solid #2196F3;
+}
+
+.status.scanning {
+    background: #fff3cd;
+    border-left-color: #ffc107;
+    color: #856404;
+}
+
+.status.error {
+    background: #f8d7da;
+    border-left-color: #dc3545;
+    color: #721c24;
+}
+
+.results-section {
+    margin-bottom: 24px;
+}
+
+.results-section h3 {
+    margin-bottom: 16px;
+    color: #333;
+    font-size: 18px;
+}
+
+.results-container {
+    min-height: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.placeholder {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 60px 20px;
+}
+
+.issue-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-left: 4px solid #ff6b6b;
+}
+
+.issue-item.warning {
+    border-left-color: #ffa726;
+}
+
+.issue-item.info {
+    border-left-color: #42a5f5;
+}
+
+.issue-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.issue-description {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.issue-suggestion {
+    background: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #555;
+    border-left: 3px solid #28a745;
+}
+
+.metrics-section h3 {
+    margin-bottom: 16px;
+    color: #333;
+    font-size: 18px;
+}
+
+.score-display {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.score-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(#4CAF50 0deg, #4CAF50 0deg, #eee 0deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+}
+
+.score-circle::before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.score-details {
+    flex: 1;
+}
+
+.score-details > div {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.score-details span {
+    font-weight: 600;
+    color: #333;
+}

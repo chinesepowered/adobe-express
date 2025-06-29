@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Validator Demo</title>
+    <link rel="stylesheet" href="src/styles.css">
+    <style>
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .demo-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+        .demo-canvas {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .canvas-element {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 25px;
+            border-radius: 6px;
+            font-family: Arial, sans-serif;
+        }
+        .good-contrast { 
+            background: white; 
+            color: #333; 
+            border: 1px solid #ddd;
+        }
+        .poor-contrast { 
+            background: white; 
+            color: #ccc; 
+            border: 1px solid #ddd;
+        }
+        .all-caps { 
+            background: white; 
+            color: #333; 
+            text-transform: uppercase;
+            border: 1px solid #ddd;
+        }
+        .small-text { 
+            background: white; 
+            color: #333; 
+            font-size: 8px;
+            border: 1px solid #ddd;
+        }
+        .image-placeholder {
+            background: #eee;
+            width: 100px;
+            height: 60px;
+            display: inline-block;
+            border-radius: 4px;
+            line-height: 60px;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="header">
+            <h1>♿ Accessibility Validator - Demo</h1>
+            <p>Real-time WCAG compliance checking for Adobe Express</p>
+        </div>
+
+        <div class="demo-section">
+            <h2>Simulated Adobe Express Canvas</h2>
+            <div class="demo-canvas">
+                <div class="canvas-element good-contrast">Welcome to Adobe Express</div><br>
+                <div class="canvas-element poor-contrast">This text has poor contrast</div><br>
+                <div class="canvas-element all-caps">This is all caps text which is harder to read</div><br>
+                <div class="canvas-element small-text">Small text</div><br>
+                <div class="image-placeholder">Image (no alt)</div>
+            </div>
+        </div>
+
+        <div class="validation-panel">
+            <div class="scan-controls">
+                <button id="scanBtn" class="primary-btn">Scan Canvas</button>
+                <div id="scanStatus" class="status">Ready to scan</div>
+            </div>
+            
+            <div class="results-section">
+                <h3>Validation Results</h3>
+                <div id="results" class="results-container">
+                    <div class="placeholder">Click "Scan Canvas" to check accessibility</div>
+                </div>
+            </div>
+            
+            <div class="metrics-section">
+                <h3>Accessibility Score</h3>
+                <div class="score-display">
+                    <div id="scoreCircle" class="score-circle">
+                        <span id="scoreText">--</span>
+                    </div>
+                    <div class="score-details">
+                        <div>WCAG Level: <span id="wcagLevel">--</span></div>
+                        <div>Issues Found: <span id="issueCount">--</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Features Demonstrated</h2>
+            <ul style="line-height: 1.8; color: #666;">
+                <li><strong>Color Contrast Analysis:</strong> Automatically checks text against background colors for WCAG AA/AAA compliance</li>
+                <li><strong>Text Readability:</strong> Validates font sizes, line lengths, and text formatting</li>
+                <li><strong>Structural Elements:</strong> Checks for alt text on images and complex group structures</li>
+                <li><strong>Real-time Scoring:</strong> Provides immediate accessibility score with actionable recommendations</li>
+                <li><strong>WCAG Compliance Levels:</strong> Shows AA/AAA compliance status with specific suggestions</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script type="module" src="src/index.js"></script>
+</body>
+</html>
