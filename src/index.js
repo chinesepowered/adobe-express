@@ -2,15 +2,34 @@
 let editor = null;
 let isAdobeExpressEnvironment = false;
 
-// Check if we're running in Adobe Express
-if (window.AddOnSDK) {
-    // Real Adobe Express environment
-    isAdobeExpressEnvironment = true;
-    editor = window.AddOnSDK.app;
+// Initialize Adobe Express SDK
+async function initializeSDK() {
+    try {
+        // Check if AddOnSDK is available globally (in Adobe Express environment)
+        if (typeof window !== 'undefined' && window.AddOnSDK) {
+            await window.AddOnSDK.ready;
+            isAdobeExpressEnvironment = true;
+            editor = window.AddOnSDK.app;
+            console.log("Adobe Express SDK initialized successfully");
+        } else {
+            throw new Error("AddOnSDK not available");
+        }
+    } catch (error) {
+        console.warn("Adobe Express SDK not available, falling back to mock:", error);
+        // Fallback for demo/development
+        const { editor: mockEditor } = await import('./mock-sdk.js');
+        editor = mockEditor;
+    }
+    
+    // Initialize the validator after SDK is ready
+    const validator = new AccessibilityValidator();
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSDK);
 } else {
-    // Fallback for demo/development
-    const { editor: mockEditor } = await import('./mock-sdk.js');
-    editor = mockEditor;
+    initializeSDK();
 }
 
 class AccessibilityValidator {
@@ -452,6 +471,9 @@ class AccessibilityValidator {
     }
 
     displayResults(results) {
+        // Store results for export
+        this.lastResults = results;
+        
         const resultsContainer = document.getElementById('results');
         const scoreText = document.getElementById('scoreText');
         const scoreCircle = document.getElementById('scoreCircle');
@@ -562,44 +584,3 @@ class AccessibilityValidator {
 </html>`;
     }
 }
-
-// Store results for export
-AccessibilityValidator.prototype.displayResults = function(results) {
-    this.lastResults = results;
-    
-    const resultsContainer = document.getElementById('results');
-    const scoreText = document.getElementById('scoreText');
-    const scoreCircle = document.getElementById('scoreCircle');
-    const wcagLevel = document.getElementById('wcagLevel');
-    const issueCount = document.getElementById('issueCount');
-    
-    scoreText.textContent = results.score;
-    issueCount.textContent = results.issues.length;
-    
-    if (results.score >= 90) {
-        wcagLevel.textContent = 'AAA';
-        scoreCircle.style.background = `conic-gradient(#4CAF50 ${results.score * 3.6}deg, #eee 0deg)`;
-    } else if (results.score >= 70) {
-        wcagLevel.textContent = 'AA';
-        scoreCircle.style.background = `conic-gradient(#FFA726 ${results.score * 3.6}deg, #eee 0deg)`;
-    } else {
-        wcagLevel.textContent = 'Needs Work';
-        scoreCircle.style.background = `conic-gradient(#FF6B6B ${results.score * 3.6}deg, #eee 0deg)`;
-    }
-    
-    if (results.issues.length === 0) {
-        resultsContainer.innerHTML = '<div class="placeholder">🎉 No accessibility issues found!</div>';
-    } else {
-        resultsContainer.innerHTML = results.issues.map(issue => `
-            <div class="issue-item ${issue.type}">
-                <div class="issue-title">${issue.title}</div>
-                <div class="issue-description">${issue.description}</div>
-                <div class="issue-suggestion">${issue.suggestion}</div>
-            </div>
-        `).join('');
-    }
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    new AccessibilityValidator();
-});

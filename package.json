@@ -4,13 +4,13 @@
   "description": "Real-time accessibility validation tool for Adobe Express",
   "main": "src/index.js",
   "scripts": {
-    "start": "vite --port 5241 --host",
-    "build": "vite build",
-    "preview": "vite preview --port 5241"
+    "clean": "ccweb-add-on-scripts clean",
+    "build": "ccweb-add-on-scripts build",
+    "start": "ccweb-add-on-scripts start",
+    "preview": "ccweb-add-on-scripts start --port 5241"
   },
   "devDependencies": {
-    "vite": "^4.0.0"
-  },
-  "dependencies": {},
-  "type": "module"
+    "@adobe/ccweb-add-on-scripts": "^3.0.0",
+    "@adobe/ccweb-add-on-ssl": "^3.0.1"
+  }
 }
